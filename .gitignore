@@ -42,7 +42,6 @@ Backup of *.doc*
 #Form of netbeans with vendor specific changes
 #Taken from zeha on GIST https://gist.github.com/zeha/5999375
 
-*.d
 *.pre
 *.p1
 *.lst
