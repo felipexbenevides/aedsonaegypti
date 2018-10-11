@@ -10,6 +10,8 @@
 #use delay(CLOCK=48M, CRYSTAL=20M) 
 #use rs232 (baud = 115200, xmit=pin_c6, rcv=pin_c7)
 
+#include<usb_cdc.h>
+
 #define ADC_CHANNEL 0
 #define RESET_TIMER0 18660
 #define RESET_TIMER1 317
@@ -70,25 +72,31 @@ void trata_t1(){
  * MAIN
  *------------------------------------*/
 int main() {
+    int temp = 8;
     //INIT
     init_serial();
     init_interrupt();
     init_adc();  
-
+    
     flag = 0;
     flag1 = 0;
     //TRISB OUTPUT
     set_tris_b(0b00000000);
     output_low(PIN_B0);
-    
+ 
     //Loop
     while(1) {       
-        if(flag1){
+        usb_task();
+
+        if(flag1){ 
             //PULSE
             output_high(PIN_B0);
             delay_ms(100);
             output_low(PIN_B0);
             flag1 = 0;
+            if(usb_enumerated()){
+                printf(usb_cdc_putc, "PULSE\n");
+            }
         }
         delay_us(10);
     }
