@@ -87,15 +87,17 @@ int main() {
     //Loop
     while(1) {       
         usb_task();
-
+        if(usb_enumerated()){
+           printf(usb_cdc_putc, "ADC0\r\n");
+        }
         if(flag1){ 
             //PULSE
             output_high(PIN_B0);
-            delay_ms(100);
+            delay_ms(10);
             output_low(PIN_B0);
             flag1 = 0;
             if(usb_enumerated()){
-                printf(usb_cdc_putc, "PULSE\n");
+               printf(usb_cdc_putc, "PULSE\r\n");
             }
         }
         delay_us(10);
